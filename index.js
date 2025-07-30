@@ -30,7 +30,7 @@ client.on('voiceStateUpdate', async (oldState, newState) => {
     }
 });
 client.login(process.env.TOKEN);
-// Copyright by sivvv0
+
 async function joinVC(client, config) {
     const guild = client.guilds.cache.get(config.Guild);
     const voiceChannel = guild.channels.cache.get(config.Channel);

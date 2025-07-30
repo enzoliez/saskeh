@@ -17,7 +17,7 @@ client.on('voiceStateUpdate', async (oldState, newState) => {
 
     if (oldVoice !== newVoice) {
         if (!oldVoice) {
-            // empty
+            // Bot baru join voice channel
         } else if (!newVoice) {
             if (oldState.member.id !== client.user.id) return;
             await joinVC(client, config);
@@ -27,8 +27,19 @@ client.on('voiceStateUpdate', async (oldState, newState) => {
                 await joinVC(client, config);
             }
         }
+
+        // ✅ Self-mute bot setelah join VC
+        if (newVoice && newState.member.id === client.user.id) {
+            try {
+                await newState.member.voice.setMute(true, 'Auto self-mute on join');
+                console.log(`[VC] Bot dimute otomatis di ${newVoice}`);
+            } catch (err) {
+                console.error('Gagal self-mute bot:', err);
+            }
+        }
     }
 });
+
 client.login(process.env.TOKEN);
 
 async function joinVC(client, config) {
